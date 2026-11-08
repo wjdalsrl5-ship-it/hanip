@@ -145,10 +145,10 @@
       <div class="space-y-1">
         <div class="flex flex-wrap items-center gap-2">
           <span class="px-2 py-0.5 text-xs font-semibold rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">실시간 거래소 웹소켓 연동됨</span>
-          <h2 class="text-sm font-bold">주말·야간 24시간 실시간 시세 엔진 가동 중 (Binance Futures `fstream.binance.com` + Upbit `api.upbit.com`)</h2>
+          <h2 class="text-sm font-bold">주말·야간 24시간 한국주식 무기한 선물 시세 엔진 가동 중 (Binance TradFi Perp + Upbit USDT/KRW)</h2>
         </div>
         <p class="text-xs text-[var(--muted)] leading-relaxed">
-          업비트 실시간 <strong>USDT/KRW(테더 원화환율)·BTC/KRW</strong> 웹소켓 시세와 바이낸스 무기한 선물(<strong>BTCUSDT, ETHUSDT, SOLUSDT</strong>) 실시간 체결틱·펀딩비·오더북을 직접 수신하여 국내 7대 대형주의 주말 해외 참고가와 호가창에 실시간 반영합니다.
+          바이낸스 한국주식 무기한 선물(<strong>SKHYNIXUSDT, SAMSUNGUSDT, HYUNDAIUSDT, SAMSUNGEMUSDT, HANMIUSDT, NAVERUSDT, LGELECTRONICSUSDT, EWYUSDT</strong>)과 업비트 실시간 <strong>USDT/KRW(테더 원화환율)</strong> 웹소켓을 직접 수신하여 코스피랩 기준 실시간 원화 추정가를 산출합니다.
         </p>
       </div>
 
@@ -177,7 +177,7 @@
     <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
       <div class="flex flex-wrap items-center gap-1.5" role="tablist">
         <button data-tab="all" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white transition cursor-pointer">
-          전체 종목 비교 (7)
+          전체 종목 비교 (8)
         </button>
         <button data-tab="pinned" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--card)] text-[var(--muted)] hover:text-[var(--fg)] border border-[var(--border)] transition cursor-pointer">
           📌 관심 고정 종목 (<span id="pin-count">3</span>)
@@ -186,16 +186,16 @@
           반도체·AI (4)
         </button>
         <button data-tab="auto_it" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--card)] text-[var(--muted)] hover:text-[var(--fg)] border border-[var(--border)] transition cursor-pointer">
-          자동차·플랫폼·가전 (3)
+          자동차·플랫폼·ETF (4)
         </button>
       </div>
 
       <div class="flex items-center gap-2 text-xs">
-        <input id="stock-search" type="text" placeholder="종목명 또는 코드 검색 (예: 삼성전자, 000660)" class="w-56 sm:w-72 px-3 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs placeholder:text-[var(--muted)] focus:outline-none focus:border-blue-500" />
+        <input id="stock-search" type="text" placeholder="종목명 또는 코드 검색 (예: SK하이닉스, 삼성전자, 000660)" class="w-56 sm:w-72 px-3 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs placeholder:text-[var(--muted)] focus:outline-none focus:border-blue-500" />
         <select id="sort-select" class="px-2.5 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs cursor-pointer">
+          <option value="mcap_desc" selected>주요 종목 / 시가총액 순</option>
           <option value="spread_desc">해외 괴리율 높은순</option>
           <option value="spread_asc">해외 괴리율 낮은순</option>
-          <option value="mcap_desc">시가총액 순</option>
           <option value="vol_desc">해외 24H 거래대금 순</option>
         </select>
       </div>
@@ -215,7 +215,7 @@
         </div>
       </div>
 
-      <div id="stock-cards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div id="stock-cards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <!-- Populated dynamically by JS -->
       </div>
     </section>
@@ -228,23 +228,23 @@
           <div class="flex flex-wrap items-start justify-between gap-4 pb-4 border-b border-[var(--border)]">
             <div>
               <div class="flex items-center gap-2">
-                <span id="detail-badge-sector" class="px-2 py-0.5 rounded text-xs font-medium bg-[var(--secondary)] text-[var(--secondary-fg)]">반도체</span>
-                <h3 id="detail-title" class="text-lg font-bold">삼성전자 (005930)</h3>
-                <span id="detail-perp-ticker" class="text-xs font-mono text-[var(--muted)]">해외티커: 005930-PERP / SMSN.IL</span>
+                <span id="detail-badge-sector" class="px-2 py-0.5 rounded text-xs font-medium bg-[var(--secondary)] text-[var(--secondary-fg)]">AI 반도체</span>
+                <h3 id="detail-title" class="text-lg font-bold">SK하이닉스 (000660)</h3>
+                <span id="detail-perp-ticker" class="text-xs font-mono text-[var(--muted)]">해외티커: SKHYNIXUSDT · SKHX</span>
               </div>
               <p class="text-xs text-[var(--muted)] mt-1">
-                KRX 금요일 종가 대비 주말 해외 추정가 실시간 흐름 (실시간 거래소 틱 & USDT 환율 반영)
+                KRX 정규장 종가 대비 주말·야간 해외 무기한 선물 실시간 흐름 (Binance TradFi Perp & Upbit USDT 환율 반영)
               </p>
             </div>
 
             <div class="flex items-center gap-4 tabular-nums">
               <div class="text-right">
                 <div class="text-xs text-[var(--muted)]">KRX 정규장 종가</div>
-                <div id="detail-krx-price" class="text-sm font-semibold">57,800원</div>
+                <div id="detail-krx-price" class="text-sm font-semibold">1,176,000원</div>
               </div>
               <div class="text-right">
                 <div class="text-xs text-[var(--muted)]">24/7 해외 실시간 추정가</div>
-                <div id="detail-est-price" class="text-xl font-bold text-red-500">58,900원 (+1.90%)</div>
+                <div id="detail-est-price" class="text-xl font-bold text-red-500">1,190,000원 (+1.19%)</div>
               </div>
             </div>
           </div>
@@ -274,19 +274,19 @@
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-3 border-t border-[var(--border)] text-xs tabular-nums">
             <div class="bg-[var(--bg)] p-2.5 rounded-lg border border-[var(--border)]">
               <div class="text-[var(--muted)]">해외 파생 원화환산 고가/저가</div>
-              <div id="detail-hl" class="font-semibold mt-1">59,400 / 57,500원</div>
+              <div id="detail-hl" class="font-semibold mt-1">1,196,000 / 1,172,000원</div>
             </div>
             <div class="bg-[var(--bg)] p-2.5 rounded-lg border border-[var(--border)]">
-              <div class="text-[var(--muted)]">실시간 펀딩비 (8H Funding)</div>
-              <div id="detail-funding" class="font-semibold text-emerald-400 mt-1">+0.0145% (롱 우위)</div>
+              <div class="text-[var(--muted)]">실시간 펀딩비 (4H/8H Funding)</div>
+              <div id="detail-funding" class="font-semibold text-emerald-400 mt-1">+0.0050% (롱 우위)</div>
             </div>
             <div class="bg-[var(--bg)] p-2.5 rounded-lg border border-[var(--border)]">
               <div class="text-[var(--muted)]">미결제약정 (Open Interest)</div>
-              <div id="detail-oi" class="font-semibold mt-1">$48.2M (24H $124.5M)</div>
+              <div id="detail-oi" class="font-semibold mt-1">$18.4M (24H $64.2M)</div>
             </div>
             <div class="bg-[var(--bg)] p-2.5 rounded-lg border border-[var(--border)]">
               <div class="text-[var(--muted)]">실시간 연동 해외 지표</div>
-              <div id="detail-driver" class="font-semibold mt-1">NVDA +2.4% · BTC 연동</div>
+              <div id="detail-driver" class="font-semibold mt-1">SKHYNIXUSDT · NVDA 연동</div>
             </div>
           </div>
         </div>
@@ -299,7 +299,7 @@
               <p class="text-xs text-[var(--muted)]">최근 3개월 국내 주요 증권사 애널리스트 리포트 집계 기준</p>
             </div>
             <span id="consensus-upside-badge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-red-500/15 text-red-500 border border-red-500/30 tabular-nums">
-              목표가 괴리율 +31.4% 상승여력
+              목표가 괴리율 +38.7% 상승여력
             </span>
           </div>
 
@@ -308,28 +308,28 @@
               <div class="flex items-center justify-between bg-[var(--bg)] p-3.5 rounded-lg border border-[var(--border)] tabular-nums">
                 <div>
                   <div class="text-xs text-[var(--muted)]">평균 목표주가 (컨센서스)</div>
-                  <div id="consensus-target-price" class="text-xl font-bold mt-0.5">76,000원</div>
+                  <div id="consensus-target-price" class="text-xl font-bold mt-0.5">1,650,000원</div>
                 </div>
                 <div class="text-right">
                   <div class="text-xs text-[var(--muted)]">투자의견 (5.0 만점)</div>
-                  <div id="consensus-score" class="text-base font-bold text-red-500 mt-0.5">4.38 (매수 / Buy)</div>
+                  <div id="consensus-score" class="text-base font-bold text-red-500 mt-0.5">4.88 (강력매수 / Buy)</div>
                 </div>
               </div>
 
               <div class="space-y-1.5 text-xs">
                 <div class="flex justify-between text-[var(--muted)]">
-                  <span>의견 분포 (총 <span id="consensus-total-analysts">24</span>개 증권사)</span>
-                  <span id="consensus-dist-text" class="font-medium">매수 22 · 중립 2 · 매도 0</span>
+                  <span>의견 분포 (총 <span id="consensus-total-analysts">26</span>개 증권사)</span>
+                  <span id="consensus-dist-text" class="font-medium">매수 26 · 중립 0 · 매도 0</span>
                 </div>
                 <div class="w-full h-3 rounded-full bg-[var(--bg)] overflow-hidden flex border border-[var(--border)]">
-                  <div id="bar-buy" class="bg-red-500 h-full" style="width: 91%"></div>
-                  <div id="bar-hold" class="bg-amber-400 h-full" style="width: 9%"></div>
+                  <div id="bar-buy" class="bg-red-500 h-full" style="width: 100%"></div>
+                  <div id="bar-hold" class="bg-amber-400 h-full" style="width: 0%"></div>
                   <div id="bar-sell" class="bg-blue-500 h-full" style="width: 0%"></div>
                 </div>
                 <div class="flex justify-between text-xs text-[var(--muted)] pt-1 tabular-nums">
-                  <span>최저 목표가: <strong id="consensus-low" class="text-[var(--fg)]">68,000원</strong></span>
-                  <span>현재 추정가: <strong id="consensus-curr" class="text-red-500">58,900원</strong></span>
-                  <span>최고 목표가: <strong id="consensus-high" class="text-[var(--fg)]">88,000원</strong></span>
+                  <span>최저 목표가: <strong id="consensus-low" class="text-[var(--fg)]">1,400,000원</strong></span>
+                  <span>현재 추정가: <strong id="consensus-curr" class="text-red-500">1,190,000원</strong></span>
+                  <span>최고 목표가: <strong id="consensus-high" class="text-[var(--fg)]">2,000,000원</strong></span>
                 </div>
               </div>
             </div>
@@ -354,7 +354,7 @@
                 <span>실시간 해외파생 원화환산 호가</span>
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               </h3>
-              <p class="text-xs text-[var(--muted)]">Binance Futures 실시간 오더북 깊이를 원화로 환산</p>
+              <p class="text-xs text-[var(--muted)]">Binance TradFi Perp 실시간 오더북 깊이를 원화로 환산</p>
             </div>
             <span class="text-xs font-mono px-2 py-0.5 rounded bg-[var(--bg)] border border-[var(--border)] tabular-nums">
               LIVE DEPTH
@@ -371,8 +371,8 @@
 
           <div class="my-2 py-2 px-3 rounded-lg bg-[var(--bg)] border border-[var(--border)] flex items-center justify-between tabular-nums">
             <span class="text-xs text-[var(--muted)]">실시간 체결 추정가</span>
-            <span id="ob-mid-price" class="text-sm font-bold text-red-500">58,900원 ($42.26)</span>
-            <span id="ob-mid-diff" class="text-xs font-semibold text-red-500">+1.90%</span>
+            <span id="ob-mid-price" class="text-sm font-bold text-red-500">1,190,000원 ($853.66)</span>
+            <span id="ob-mid-diff" class="text-xs font-semibold text-red-500">+1.19%</span>
           </div>
 
           <div id="orderbook-bids" class="space-y-1 text-xs tabular-nums"></div>
@@ -394,7 +394,7 @@
           <div>
             <div class="flex items-center justify-between pb-3 border-b border-[var(--border)]">
               <h3 class="text-sm font-bold">종목 최신 증권사 리포트 & 주말 브리핑</h3>
-              <span id="news-stock-tag" class="text-xs text-blue-400 font-semibold">삼성전자</span>
+              <span id="news-stock-tag" class="text-xs text-blue-400 font-semibold">SK하이닉스</span>
             </div>
             <div id="stock-reports-list" class="divide-y divide-[var(--border)] mt-1"></div>
           </div>
@@ -411,40 +411,40 @@
       <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-sm font-bold">KOSPI 시가총액 도미넌스</h3>
+            <h3 class="text-sm font-bold">KOSPI 5,059pt 시가총액 도미넌스</h3>
             <span class="text-xs px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-fg)]">인사이트</span>
           </div>
           <p class="text-xs text-[var(--muted)] mb-4">
             코스피 전체 시가총액 중 반도체 투톱(삼성전자·SK하이닉스)과 주요 대형주의 비중을 비교합니다.
           </p>
           <div class="w-full h-5 rounded-lg overflow-hidden flex border border-[var(--border)] mb-4">
-            <div class="bg-blue-500 h-full" style="width: 16.8%"></div>
-            <div class="bg-red-500 h-full" style="width: 6.9%"></div>
-            <div class="bg-emerald-500 h-full" style="width: 2.6%"></div>
-            <div class="bg-amber-500 h-full" style="width: 8.4%"></div>
-            <div class="bg-slate-700 h-full" style="width: 65.3%"></div>
+            <div class="bg-blue-500 h-full" style="width: 22.8%"></div>
+            <div class="bg-red-500 h-full" style="width: 16.9%"></div>
+            <div class="bg-emerald-500 h-full" style="width: 1.5%"></div>
+            <div class="bg-amber-500 h-full" style="width: 8.8%"></div>
+            <div class="bg-slate-700 h-full" style="width: 50.0%"></div>
           </div>
           <div class="space-y-2 text-xs tabular-nums">
             <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500"></span>삼성전자</span>
-              <span class="font-semibold">16.82% (345.1조)</span>
+              <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500"></span>삼성전자 (195,500원)</span>
+              <span class="font-semibold">22.83% (1,155.2조)</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-red-500"></span>SK하이닉스</span>
-              <span class="font-semibold">6.94% (142.3조)</span>
+              <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-red-500"></span>SK하이닉스 (1,190,000원)</span>
+              <span class="font-semibold">16.92% (856.1조)</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span>현대차</span>
-              <span class="font-semibold">2.58% (52.9조)</span>
+              <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span>삼성전기 / 현대차</span>
+              <span class="font-semibold">2.41% (122.1조)</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500"></span>반도체 투톱 합산 비중</span>
-              <span class="font-bold">23.76% (전주 대비 +0.42%p)</span>
+              <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500"></span>반도체 투톱 합산 도미넌스</span>
+              <span class="font-bold">39.75% (2,011.3조)</span>
             </div>
           </div>
         </div>
         <div class="mt-4 pt-3 border-t border-[var(--border)] text-xs text-[var(--muted)]">
-          💡 투톱 도미넌스 상승 시 대형 반도체 중심 장세, 하락 시 중소형주·코스닥 순환매 가능성을 시사합니다.
+          💡 투톱 도미넌스 상승 시 대형 AI 반도체 중심 장세, 하락 시 중소형주·코스닥 순환매 가능성을 시사합니다.
         </div>
       </div>
 
@@ -452,14 +452,14 @@
         <div>
           <div class="flex items-center justify-between mb-2">
             <h3 class="text-sm font-bold">야간·주말 투자심리 온도계 (공포·탐욕)</h3>
-            <span id="fg-status-pill" class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">62 · 탐욕 (Greed)</span>
+            <span id="fg-status-pill" class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">64 · 탐욕 (Greed)</span>
           </div>
           <p class="text-xs text-[var(--muted)] mb-4">
-            해외 영구선물 괴리율, 실시간 펀딩비, 업비트 테더 김치프리미엄, VIX 지수를 종합한 주말 심리 지표입니다.
+            해외 영구선물(SKHYNIXUSDT·SAMSUNGUSDT) 괴리율, 펀딩비, 업비트 테더 김프를 종합한 주말 심리 지표입니다.
           </p>
           <div class="space-y-1.5 mb-4">
             <div class="w-full h-3.5 rounded-full bg-gradient-to-r from-blue-500 via-amber-400 to-red-500 relative">
-              <div id="fg-pointer" class="w-4 h-4 rounded-full bg-white border-2 border-black shadow absolute -top-0.5 transition-all duration-500" style="left: 62%"></div>
+              <div id="fg-pointer" class="w-4 h-4 rounded-full bg-white border-2 border-black shadow absolute -top-0.5 transition-all duration-500" style="left: 64%"></div>
             </div>
             <div class="flex justify-between text-xs text-[var(--muted)]">
               <span>0 극단적 공포</span>
@@ -470,15 +470,15 @@
           <div class="grid grid-cols-2 gap-2.5 text-xs tabular-nums">
             <div class="bg-[var(--bg)] p-2.5 rounded-lg border border-[var(--border)]">
               <div class="text-[var(--muted)]">평균 해외 괴리율</div>
-              <div id="insight-avg-spread" class="font-bold text-red-500 mt-0.5">+1.42% (강세 우위)</div>
+              <div id="insight-avg-spread" class="font-bold text-red-500 mt-0.5">+1.65% (강세 우위)</div>
             </div>
             <div class="bg-[var(--bg)] p-2.5 rounded-lg border border-[var(--border)]">
               <div class="text-[var(--muted)]">업비트 USDT 김프</div>
               <div id="insight-kimp" class="font-bold text-emerald-400 mt-0.5">+0.54% (실시간)</div>
             </div>
             <div class="bg-[var(--bg)] p-2.5 rounded-lg border border-[var(--border)]">
-              <div class="text-[var(--muted)]">Binance BTC 펀딩비</div>
-              <div id="insight-btc-funding" class="font-bold mt-0.5">+0.0100%</div>
+              <div class="text-[var(--muted)]">SKHYNIX 펀딩비</div>
+              <div id="insight-btc-funding" class="font-bold mt-0.5">+0.0050%</div>
             </div>
             <div class="bg-[var(--bg)] p-2.5 rounded-lg border border-[var(--border)]">
               <div class="text-[var(--muted)]">월요일 시초 분위기</div>
@@ -515,10 +515,10 @@
     <footer class="border-t border-[var(--border)] pt-5 pb-8 text-xs text-[var(--muted)] space-y-2">
       <div class="flex flex-wrap items-center justify-between gap-2">
         <div class="font-semibold text-[var(--fg)]">KOSPI LAB 24/7 — 국내주식 주말·야간 실시간 거래소 연동 비교 대시보드</div>
-        <div>실시간 연동: Binance Futures WebSocket (`wss://fstream.binance.com`) · Upbit WebSocket (`wss://api.upbit.com/websocket/v1`)</div>
+        <div>실시간 연동: Binance Futures TradFi (`SKHYNIXUSDT`·`SAMSUNGUSDT` 등) · Hyperliquid (`SKHX`·`SMSN`) · Upbit (`KRW-USDT`)</div>
       </div>
       <p class="leading-relaxed">
-        ⚠️ <strong>[투자 유의사항 및 면책 고지]</strong> 본 대시보드에 표시되는 '해외 실시간 추정가(참고가)'는 한국거래소(KRX) 또는 대체거래소(NXT)의 공식 체결 시세가 아니며, 해외 파생상품 시세 및 실시간 암호화폐 거래소(업비트 USDT/KRW 환율·바이낸스 무기한 선물) 데이터를 기반으로 환산한 보조 참고지표입니다. 다음 거래일 시초가를 보장하지 않으며, 모든 투자의 최종 판단과 책임은 투자자 본인에게 있습니다.
+        ⚠️ <strong>[투자 유의사항 및 면책 고지]</strong> 본 대시보드에 표시되는 '해외 실시간 추정가(참고가)'는 한국거래소(KRX) 또는 대체거래소(NXT)의 공식 체결 시세가 아니며, 해외 파생상품 시세(바이낸스 한국주식 무기한 선물·하이퍼리퀴드) 및 업비트 실시간 USDT/KRW 환율 데이터를 기반으로 환산한 보조 참고지표입니다. 다음 거래일 시초가를 보장하지 않으며, 모든 투자의 최종 판단과 책임은 투자자 본인에게 있습니다.
       </p>
     </footer>
   </main>
@@ -553,171 +553,190 @@
 
   <script>
     // =========================================================================
-    // 1. STOCKS & MACRO DATA
+    // 1. STOCKS & MACRO DATA (2026.11 KOSPI LAB REAL-TIME SPECIFICATION)
     // =========================================================================
     const STOCKS_DATA = [
       {
-        code: "005930", name: "삼성전자", sector: "반도체", category: "semi",
-        perpTicker: "005930-PERP · SMSN.IL", proxyStream: "btcusdt", beta: 0.85,
-        krxClose: 57800, krxChangePct: -0.86, usdPerpBase: 42.26, usdPerpCurrent: 42.26,
-        marketCapTrillion: 345.1, fundingRate: 0.0145, openInterestM: 48.2, vol24hM: 124.5,
-        driverText: "NVDA +2.4% · MU +1.9%", pinned: true, qty: 100,
-        consensus: {
-          targetPrice: 76000, score: 4.38, analysts: 24, buy: 22, hold: 2, sell: 0, low: 68000, high: 88000,
-          earnings: [
-            { year: "2024A", rev: "300.9조", op: "32.7조", yoy: "+398%" },
-            { year: "2025A", rev: "328.4조", op: "41.8조", yoy: "+27.8%" },
-            { year: "2026E", rev: "354.2조", op: "49.5조", yoy: "+18.4%" }
-          ]
-        },
-        reports: [
-          { firm: "미래에셋증권", title: "HBM4 양산 타임라인 가속화 및 파운드리 수율 개선 확인", target: "80,000원", date: "11.07 (주말브리핑)" },
-          { firm: "한국투자증권", title: "범용 DRAM 가격 조정 우려 선반영, 밸류에이션 역사적 하단", target: "75,000원", date: "11.06" },
-          { firm: "NH투자증권", title: "북미 AI 서버 고객사향 공급 확대 가시화", target: "78,000원", date: "11.05" }
-        ]
-      },
-      {
         code: "000660", name: "SK하이닉스", sector: "AI 반도체", category: "semi",
-        perpTicker: "000660-PERP · HY9H.DE", proxyStream: "ethusdt", beta: 1.15,
-        krxClose: 195400, krxChangePct: +1.45, usdPerpBase: 143.35, usdPerpCurrent: 143.35,
-        marketCapTrillion: 142.3, fundingRate: 0.0230, openInterestM: 62.8, vol24hM: 168.2,
-        driverText: "NVDA +2.4% · TSMC +1.7%", pinned: true, qty: 30,
+        perpTicker: "SKHYNIXUSDT · SKHX", binanceSym: "skhynixusdt", hlSym: "SKHX", proxyStream: "ethusdt", beta: 0.45,
+        krxClose: 1176000, krxChangePct: -1.67, usdPerpBase: 853.66, usdPerpCurrent: 853.66,
+        marketCapTrillion: 856.1, fundingRate: 0.0050, openInterestM: 18.4, vol24hM: 64.2,
+        driverText: "SKHYNIXUSDT · NVDA/TSMC 동조", pinned: true, qty: 10,
         consensus: {
-          targetPrice: 248000, score: 4.72, analysts: 25, buy: 25, hold: 0, sell: 0, low: 220000, high: 280000,
+          targetPrice: 1650000, score: 4.88, analysts: 26, buy: 26, hold: 0, sell: 0, low: 1400000, high: 2000000,
           earnings: [
             { year: "2024A", rev: "66.2조", op: "23.5조", yoy: "흑자전환" },
-            { year: "2025A", rev: "88.4조", op: "36.2조", yoy: "+54.0%" },
-            { year: "2026E", rev: "102.1조", op: "44.8조", yoy: "+23.7%" }
+            { year: "2025A", rev: "112.4조", op: "54.8조", yoy: "+133.2%" },
+            { year: "2026E", rev: "168.5조", op: "96.2조", yoy: "+75.5%" }
           ]
         },
         reports: [
-          { firm: "삼성증권", title: "HBM3E 12단 독점적 지위 지속, 분기 최대 영업이익 경신 전망", target: "260,000원", date: "11.07 (주말브리핑)" },
-          { firm: "메리츠증권", title: "AI 데이터센터 CAPEX 상향의 최대 수혜주", target: "250,000원", date: "11.06" },
-          { firm: "키움증권", title: "eSSD 및 고성능 메모리 수익성 차별화 입증", target: "240,000원", date: "11.05" }
+          { firm: "미래에셋증권", title: "HBM4 16단 독점 공급 및 영업이익 100조 시대 진입 가시화", target: "1,850,000원", date: "11.07 (주말브리핑)" },
+          { firm: "삼성증권", title: "글로벌 AI 가속기향 맞춤형 HBM 수주 잔고 2027년까지 완판", target: "1,700,000원", date: "11.06" },
+          { firm: "메리츠증권", title: "바이낸스·하이퍼리퀴드 주말 선물 프리미엄 지속, 외국인 수급 견조", target: "1,650,000원", date: "11.05" }
         ]
       },
       {
-        code: "005380", name: "현대차", sector: "자동차·모빌리티", category: "auto_it",
-        perpTicker: "005380-PERP · HYMTF", proxyStream: "btcusdt", beta: 0.55,
-        krxClose: 214500, krxChangePct: -0.46, usdPerpBase: 155.10, usdPerpCurrent: 155.10,
-        marketCapTrillion: 52.9, fundingRate: 0.0085, openInterestM: 19.4, vol24hM: 38.6,
-        driverText: "USDT/KRW 실시간 환율 · HEV 호조", pinned: true, qty: 20,
+        code: "005930", name: "삼성전자", sector: "반도체", category: "semi",
+        perpTicker: "SAMSUNGUSDT · SMSN", binanceSym: "samsungusdt", hlSym: "SMSN", proxyStream: "btcusdt", beta: 0.35,
+        krxClose: 193500, krxChangePct: -1.12, usdPerpBase: 140.24, usdPerpCurrent: 140.24,
+        marketCapTrillion: 1155.2, fundingRate: 0.0050, openInterestM: 22.8, vol24hM: 78.5,
+        driverText: "SAMSUNGUSDT · HBM4 양산", pinned: true, qty: 50,
         consensus: {
-          targetPrice: 295000, score: 4.55, analysts: 21, buy: 20, hold: 1, sell: 0, low: 260000, high: 330000,
+          targetPrice: 275000, score: 4.65, analysts: 25, buy: 24, hold: 1, sell: 0, low: 240000, high: 310000,
           earnings: [
-            { year: "2024A", rev: "175.2조", op: "14.2조", yoy: "-5.9%" },
-            { year: "2025A", rev: "184.0조", op: "15.1조", yoy: "+6.3%" },
-            { year: "2026E", rev: "192.5조", op: "15.9조", yoy: "+5.3%" }
+            { year: "2024A", rev: "300.9조", op: "32.7조", yoy: "+398%" },
+            { year: "2025A", rev: "362.8조", op: "68.4조", yoy: "+109.2%" },
+            { year: "2026E", rev: "428.0조", op: "114.5조", yoy: "+67.4%" }
           ]
         },
         reports: [
-          { firm: "현대차증권", title: "고환율 효과 및 북미 하이브리드(HEV) 믹스 개선으로 마진 방어", target: "300,000원", date: "11.07" },
-          { firm: "대신증권", title: "자사주 매입·소각 밸류업 프로그램 이행 모멘텀 유효", target: "290,000원", date: "11.06" }
-        ]
-      },
-      {
-        code: "042700", name: "한미반도체", sector: "반도체장비", category: "semi",
-        perpTicker: "042700-PERP", proxyStream: "solusdt", beta: 1.35,
-        krxClose: 98200, krxChangePct: +2.18, usdPerpBase: 72.30, usdPerpCurrent: 72.30,
-        marketCapTrillion: 9.5, fundingRate: 0.0280, openInterestM: 14.1, vol24hM: 42.0,
-        driverText: "TC본더 수주 기대 · SOXX +1.8%", pinned: false, qty: 0,
-        consensus: {
-          targetPrice: 145000, score: 4.40, analysts: 12, buy: 11, hold: 1, sell: 0, low: 125000, high: 170000,
-          earnings: [
-            { year: "2024A", rev: "0.56조", op: "0.25조", yoy: "+624%" },
-            { year: "2025A", rev: "0.89조", op: "0.41조", yoy: "+64.0%" },
-            { year: "2026E", rev: "1.18조", op: "0.55조", yoy: "+34.1%" }
-          ]
-        },
-        reports: [
-          { firm: "유진투자증권", title: "글로벌 메모리 고객사향 차세대 TC본더 독점 공급 지위 강화", target: "150,000원", date: "11.06" },
-          { firm: "하나증권", title: "HBM4 플럭스리스 본더 시장 선점 기대감 유효", target: "140,000원", date: "11.04" }
+          { firm: "한국투자증권", title: "차세대 HBM4 빅테크 퀄 테스트 통과 및 파운드리 2나노 수주 확대", target: "285,000원", date: "11.07 (주말브리핑)" },
+          { firm: "NH투자증권", title: "메모리 슈퍼사이클 2막 진입, 시가총액 1,200조 돌파 재시도 전망", target: "275,000원", date: "11.06" },
+          { firm: "KB증권", title: "해외 무기한 선물(SAMSUNGUSDT) 야간 매수세 유입 확인", target: "270,000원", date: "11.05" }
         ]
       },
       {
         code: "009150", name: "삼성전기", sector: "IT부품·MLCC", category: "semi",
-        perpTicker: "009150-PERP", proxyStream: "ethusdt", beta: 0.75,
-        krxClose: 132500, krxChangePct: +0.38, usdPerpBase: 96.15, usdPerpCurrent: 96.15,
-        marketCapTrillion: 9.9, fundingRate: 0.0110, openInterestM: 8.7, vol24hM: 19.3,
-        driverText: "전장/AI 서버용 MLCC 가동률 상승", pinned: false, qty: 0,
+        perpTicker: "SAMSUNGEMUSDT", binanceSym: "samsungemusdt", hlSym: null, proxyStream: "ethusdt", beta: 0.40,
+        krxClose: 870000, krxChangePct: -1.36, usdPerpBase: 631.28, usdPerpCurrent: 631.28,
+        marketCapTrillion: 64.9, fundingRate: 0.0050, openInterestM: 6.4, vol24hM: 18.9,
+        driverText: "SAMSUNGEMUSDT · AI 서버 MLCC", pinned: true, qty: 5,
         consensus: {
-          targetPrice: 178000, score: 4.30, analysts: 19, buy: 18, hold: 1, sell: 0, low: 160000, high: 200000,
+          targetPrice: 1150000, score: 4.58, analysts: 20, buy: 19, hold: 1, sell: 0, low: 1000000, high: 1300000,
           earnings: [
             { year: "2024A", rev: "10.2조", op: "0.78조", yoy: "+18.1%" },
-            { year: "2025A", rev: "11.4조", op: "0.98조", yoy: "+25.6%" },
-            { year: "2026E", rev: "12.5조", op: "1.19조", yoy: "+21.4%" }
+            { year: "2025A", rev: "14.8조", op: "2.45조", yoy: "+214.1%" },
+            { year: "2026E", rev: "19.6조", op: "4.82조", yoy: "+96.7%" }
           ]
         },
         reports: [
-          { firm: "iM증권", title: "AI 서버 및 전장용 고용량 MLCC 탑재량 급증 수혜", target: "180,000원", date: "11.06" },
-          { firm: "KB증권", title: "FC-BGA 기판 빅테크 고객사 신규 공급 본격화", target: "175,000원", date: "11.05" }
+          { firm: "iM증권", title: "AI 가속기용 초고용량 MLCC 및 유리기판(Glass Substrate) 양산 모멘텀", target: "1,200,000원", date: "11.06" },
+          { firm: "하나증권", title: "FC-BGA 기판 풀가동 체제 진입, 영업이익률 역대 최고치 경신", target: "1,150,000원", date: "11.05" }
+        ]
+      },
+      {
+        code: "005380", name: "현대차", sector: "자동차·로보틱스", category: "auto_it",
+        perpTicker: "HYUNDAIUSDT · HYMTF", binanceSym: "hyundaiusdt", hlSym: null, proxyStream: "btcusdt", beta: 0.30,
+        krxClose: 281000, krxChangePct: -0.71, usdPerpBase: 207.32, usdPerpCurrent: 207.32,
+        marketCapTrillion: 57.2, fundingRate: 0.0050, openInterestM: 9.2, vol24hM: 24.6,
+        driverText: "HYUNDAIUSDT · 보스턴다이내믹스", pinned: false, qty: 20,
+        consensus: {
+          targetPrice: 380000, score: 4.60, analysts: 22, buy: 21, hold: 1, sell: 0, low: 340000, high: 420000,
+          earnings: [
+            { year: "2024A", rev: "175.2조", op: "14.2조", yoy: "-5.9%" },
+            { year: "2025A", rev: "188.4조", op: "16.4조", yoy: "+15.5%" },
+            { year: "2026E", rev: "204.0조", op: "18.9조", yoy: "+15.2%" }
+          ]
+        },
+        reports: [
+          { firm: "현대차증권", title: "북미 하이브리드 점유율 확대 및 휴머노이드 로봇 상용화 가치 재평가", target: "390,000원", date: "11.07" },
+          { firm: "대신증권", title: "적극적 주주환원(자사주 소각) 및 고배당 매력 부각", target: "375,000원", date: "11.06" }
+        ]
+      },
+      {
+        code: "042700", name: "한미반도체", sector: "반도체장비", category: "semi",
+        perpTicker: "HANMIUSDT", binanceSym: "hanmiusdt", hlSym: null, proxyStream: "solusdt", beta: 0.55,
+        krxClose: 163300, krxChangePct: +1.85, usdPerpBase: 120.88, usdPerpCurrent: 120.88,
+        marketCapTrillion: 15.6, fundingRate: 0.0085, openInterestM: 7.5, vol24hM: 29.4,
+        driverText: "HANMIUSDT · HBM4 플럭스리스 본더", pinned: false, qty: 0,
+        consensus: {
+          targetPrice: 240000, score: 4.50, analysts: 14, buy: 13, hold: 1, sell: 0, low: 200000, high: 280000,
+          earnings: [
+            { year: "2024A", rev: "0.56조", op: "0.25조", yoy: "+624%" },
+            { year: "2025A", rev: "1.12조", op: "0.54조", yoy: "+116.0%" },
+            { year: "2026E", rev: "1.68조", op: "0.84조", yoy: "+55.6%" }
+          ]
+        },
+        reports: [
+          { firm: "유진투자증권", title: "글로벌 AI 메모리 고객사향 차세대 TC본더 독점 공급 지위 강화", target: "250,000원", date: "11.06" },
+          { firm: "키움증권", title: "HBM4 하이브리드 본딩 및 마일드 하이브리드 장비 수주 가시화", target: "235,000원", date: "11.04" }
         ]
       },
       {
         code: "035420", name: "NAVER", sector: "AI·플랫폼", category: "auto_it",
-        perpTicker: "035420-PERP", proxyStream: "solusdt", beta: 0.65,
-        krxClose: 176800, krxChangePct: +1.14, usdPerpBase: 127.40, usdPerpCurrent: 127.40,
-        marketCapTrillion: 28.0, fundingRate: 0.0060, openInterestM: 11.2, vol24hM: 25.4,
-        driverText: "커머스 AI 광고 성장 · 자사주 소각", pinned: false, qty: 10,
+        perpTicker: "NAVERUSDT", binanceSym: "naverusdt", hlSym: null, proxyStream: "solusdt", beta: 0.35,
+        krxClose: 190200, krxChangePct: +0.84, usdPerpBase: 138.88, usdPerpCurrent: 138.88,
+        marketCapTrillion: 30.5, fundingRate: 0.0050, openInterestM: 6.1, vol24hM: 15.2,
+        driverText: "NAVERUSDT · AI 에이전트/커머스", pinned: false, qty: 10,
         consensus: {
-          targetPrice: 235000, score: 4.45, analysts: 22, buy: 21, hold: 1, sell: 0, low: 210000, high: 260000,
+          targetPrice: 260000, score: 4.45, analysts: 22, buy: 21, hold: 1, sell: 0, low: 230000, high: 290000,
           earnings: [
             { year: "2024A", rev: "10.7조", op: "1.96조", yoy: "+31.5%" },
-            { year: "2025A", rev: "11.6조", op: "2.21조", yoy: "+12.7%" },
-            { year: "2026E", rev: "12.5조", op: "2.48조", yoy: "+12.2%" }
+            { year: "2025A", rev: "12.1조", op: "2.38조", yoy: "+21.4%" },
+            { year: "2026E", rev: "13.5조", op: "2.82조", yoy: "+18.5%" }
           ]
         },
         reports: [
-          { firm: "교보증권", title: "홈피드·클립 체류시간 증가로 디스플레이 광고 고성장", target: "240,000원", date: "11.07" },
-          { firm: "다올투자증권", title: "플러스스토어 AI 쇼핑 에이전트 도입 효과 가시화", target: "230,000원", date: "11.05" }
+          { firm: "교보증권", title: "AI 브리핑 및 쇼핑 에이전트 도입으로 광고·커머스 ARPU 상승", target: "265,000원", date: "11.07" },
+          { firm: "다올투자증권", title: "소버린 AI 클라우드 수주 확대 및 수익성 개선 지속", target: "255,000원", date: "11.05" }
         ]
       },
       {
-        code: "066570", name: "LG전자", sector: "가전·전장", category: "auto_it",
-        perpTicker: "066570-PERP · LGEJY", proxyStream: "btcusdt", beta: 0.50,
-        krxClose: 94600, krxChangePct: -1.15, usdPerpBase: 67.65, usdPerpCurrent: 67.65,
-        marketCapTrillion: 15.5, fundingRate: -0.0020, openInterestM: 7.4, vol24hM: 14.8,
-        driverText: "AI 데이터센터 칠러(냉각) 수주 모멘텀", pinned: false, qty: 0,
+        code: "066570", name: "LG전자", sector: "가전·AI냉각", category: "auto_it",
+        perpTicker: "LGELECTRONICSUSDT", binanceSym: "lgelectronicsusdt", hlSym: null, proxyStream: "btcusdt", beta: 0.30,
+        krxClose: 138500, krxChangePct: -0.65, usdPerpBase: 101.86, usdPerpCurrent: 101.86,
+        marketCapTrillion: 22.6, fundingRate: 0.0050, openInterestM: 4.8, vol24hM: 11.4,
+        driverText: "LGELECTRONICSUSDT · AI 데이터센터 칠러", pinned: false, qty: 0,
         consensus: {
-          targetPrice: 132000, score: 4.25, analysts: 18, buy: 17, hold: 1, sell: 0, low: 115000, high: 150000,
+          targetPrice: 185000, score: 4.35, analysts: 19, buy: 18, hold: 1, sell: 0, low: 160000, high: 210000,
           earnings: [
             { year: "2024A", rev: "87.7조", op: "3.54조", yoy: "-0.3%" },
-            { year: "2025A", rev: "91.2조", op: "3.98조", yoy: "+12.4%" },
-            { year: "2026E", rev: "95.0조", op: "4.42조", yoy: "+11.1%" }
+            { year: "2025A", rev: "93.4조", op: "4.45조", yoy: "+25.7%" },
+            { year: "2026E", rev: "99.8조", op: "5.32조", yoy: "+19.6%" }
           ]
         },
         reports: [
-          { firm: "IBK투자증권", title: "B2B 공조(HVAC) 및 데이터센터 칠러 사업 고성장 주목", target: "135,000원", date: "11.06" },
-          { firm: "SK증권", title: "구독 가전 및 웹OS 플랫폼 수익 비중 확대로 체질 개선", target: "130,000원", date: "11.04" }
+          { firm: "IBK투자증권", title: "북미 빅테크 AI 데이터센터향 초대형 칠러(HVAC) 수주 급증", target: "190,000원", date: "11.06" },
+          { firm: "SK증권", title: "가전 구독 서비스 글로벌 확장 및 웹OS 플랫폼 고마진 지속", target: "180,000원", date: "11.04" }
+        ]
+      },
+      {
+        code: "EWY", name: "MSCI Korea / KODEX200", sector: "한국지수·ETF", category: "auto_it",
+        perpTicker: "EWYUSDT · KODEX200USDT", binanceSym: "ewyusdt", hlSym: "EWY", proxyStream: "btcusdt", beta: 0.25,
+        krxClose: 176500, krxChangePct: -1.18, usdPerpBase: 128.48, usdPerpCurrent: 128.48,
+        marketCapTrillion: 42.0, fundingRate: 0.0050, openInterestM: 15.2, vol24hM: 45.8,
+        driverText: "EWYUSDT · 야간 코스피200 지수 연동", pinned: false, qty: 0,
+        consensus: {
+          targetPrice: 215000, score: 4.50, analysts: 15, buy: 14, hold: 1, sell: 0, low: 195000, high: 235000,
+          earnings: [
+            { year: "KOSPI", rev: "5,059.69pt", op: "P/E 11.4x", yoy: "+48.2%" },
+            { year: "EWY", rev: "$128.48", op: "AUM $6.8B", yoy: "+44.5%" },
+            { year: "KODEX200", rev: "68,450원", op: "순자산 14.2조", yoy: "+46.8%" }
+          ]
+        },
+        reports: [
+          { firm: "글로벌ETF리서치", title: "MSCI Korea ETF(EWY) 주말 무기한 선물 기준 코스피 +1.47% 갭상승 시사", target: "215,000원", date: "11.07 (주말브리핑)" },
+          { firm: "삼성자산운용", title: "반도체 투톱 이익 모멘텀에 따른 한국 증시 리레이팅 지속", target: "210,000원", date: "11.06" }
         ]
       }
     ];
 
     const MACRO_INDICATORS = [
-      { id: "kospi", name: "KOSPI (마감)", val: 2564.82, change: -0.34, unit: "" },
-      { id: "kosdaq", name: "KOSDAQ (마감)", val: 742.15, change: +0.62, unit: "" },
+      { id: "kospi", name: "KOSPI (마감)", val: 5059.69, change: -1.45, unit: "" },
+      { id: "kosdaq", name: "KOSDAQ (마감)", val: 644.27, change: -0.25, unit: "" },
       { id: "usdt", name: "Upbit USDT/KRW", val: 1394.00, change: +0.35, unit: "원", live: true },
+      { id: "skhynixusdt", name: "Binance SKHYNIX", val: 853.66, change: +1.19, unit: "$", live: true },
+      { id: "samsungusdt", name: "Binance SAMSUNG", val: 140.24, change: +1.03, unit: "$", live: true },
+      { id: "ewyusdt", name: "MSCI Korea (EWY)", val: 128.48, change: +1.47, unit: "$", live: true },
       { id: "btcusdt", name: "Binance BTCUSDT", val: 76500.00, change: +1.85, unit: "$", live: true },
-      { id: "ethusdt", name: "Binance ETHUSDT", val: 2920.00, change: +2.40, unit: "$", live: true },
-      { id: "btckrw", name: "Upbit BTC/KRW", val: 106800000, change: +1.95, unit: "원", live: true },
-      { id: "soxx", name: "필라델피아 반도체", val: 5342.10, change: +1.84, unit: "" },
       { id: "usdkrw", name: "USD/KRW 마감", val: 1386.50, change: -0.25, unit: "원" }
     ];
 
     const TOP_VOL_KR = [
-      { rank: 1, name: "삼성전자", vol: "1조 4,820억", chg: -0.86, estSpread: "+1.90%" },
-      { rank: 2, name: "SK하이닉스", vol: "1조 1,290억", chg: +1.45, estSpread: "+2.26%" },
-      { rank: 3, name: "한미반도체", vol: "4,310억", chg: +2.18, estSpread: "+2.65%" },
-      { rank: 4, name: "현대차", vol: "3,180억", chg: -0.46, estSpread: "+0.81%" },
-      { rank: 5, name: "NAVER", vol: "2,450억", chg: +1.14, estSpread: "+0.46%" }
+      { rank: 1, name: "SK하이닉스 (119만원)", vol: "3조 8,420억", chg: -1.67, estSpread: "+1.19%" },
+      { rank: 2, name: "삼성전자 (19.55만원)", vol: "3조 1,190억", chg: -1.12, estSpread: "+1.03%" },
+      { rank: 3, name: "삼성전기 (88만원)", vol: "8,920억", chg: -1.36, estSpread: "+1.15%" },
+      { rank: 4, name: "현대차 (28.9만원)", vol: "6,480억", chg: -0.71, estSpread: "+2.85%" },
+      { rank: 5, name: "한미반도체 (16.85만원)", vol: "5,310억", chg: +1.85, estSpread: "+3.18%" }
     ];
 
     const TOP_VOL_US = [
-      { rank: 1, name: "NVIDIA (엔비디아)", vol: "$34.8B", chg: +2.42, estSpread: "삼전·닉스 동조" },
-      { rank: 2, name: "TSMC (ADR)", vol: "$4.2B", chg: +1.74, estSpread: "AI 파운드리 강세" },
-      { rank: 3, name: "Micron (마이크론)", vol: "$3.1B", chg: +1.92, estSpread: "DRAM/HBM 동조" },
-      { rank: 4, name: "Broadcom (브로드컴)", vol: "$2.9B", chg: +1.55, estSpread: "AI ASIC 호조" },
-      { rank: 5, name: "Tesla (테슬라)", vol: "$18.4B", chg: +3.10, estSpread: "2차전지·모빌리티" }
+      { rank: 1, name: "NVIDIA (엔비디아)", vol: "$42.8B", chg: +2.42, estSpread: "SK닉스·삼전 동조" },
+      { rank: 2, name: "TSMC (ADR)", vol: "$6.4B", chg: +1.74, estSpread: "HBM4 파운드리 강세" },
+      { rank: 3, name: "Micron (마이크론)", vol: "$4.8B", chg: +1.92, estSpread: "DRAM/HBM 동조" },
+      { rank: 4, name: "Broadcom (브로드컴)", vol: "$3.9B", chg: +1.55, estSpread: "AI ASIC 호조" },
+      { rank: 5, name: "iShares Korea (EWY)", vol: "$1.2B", chg: +1.47, estSpread: "한국지수 선물 강세" }
     ];
 
     // =========================================================================
@@ -730,8 +749,8 @@
       activeFx: 1394.00,
       activeTab: "all",
       searchQuery: "",
-      sortBy: "spread_desc",
-      selectedStockCode: "005930",
+      sortBy: "mcap_desc",
+      selectedStockCode: "000660",
       chartTimeframe: "1m",
       volMode: "kr",
       tickCount: 0,
@@ -743,7 +762,7 @@
     };
 
     try {
-      const saved = localStorage.getItem("kospilab_live_state");
+      const saved = localStorage.getItem("kospilab_live_state_v2");
       if (saved) {
         const parsed = JSON.parse(saved);
         STOCKS_DATA.forEach(s => {
@@ -757,27 +776,32 @@
       try {
         const pins = {}, qtys = {};
         STOCKS_DATA.forEach(s => { pins[s.code] = s.pinned; qtys[s.code] = s.qty; });
-        localStorage.setItem("kospilab_live_state", JSON.stringify({ pins, qtys }));
+        localStorage.setItem("kospilab_live_state_v2", JSON.stringify({ pins, qtys }));
       } catch (e) {}
     }
 
-    STOCKS_DATA.forEach(s => {
-      const pts = [];
-      let cur = s.usdPerpCurrent * state.activeFx;
-      for (let i = 0; i < 45; i++) {
-        const noise = (Math.random() - 0.48) * (s.krxClose * 0.002);
-        cur = Math.max(s.krxClose * 0.95, Math.min(s.krxClose * 1.08, cur + noise));
-        pts.push(Math.round(cur));
-      }
-      state.priceHistory[s.code] = pts;
-      s.usdPerpCurrent = +(pts[pts.length - 1] / state.activeFx).toFixed(2);
-    });
-
     function roundToTick(krwPrice) {
+      if (krwPrice >= 500000) return Math.round(krwPrice / 1000) * 1000;
       if (krwPrice >= 200000) return Math.round(krwPrice / 500) * 500;
       if (krwPrice >= 50000) return Math.round(krwPrice / 100) * 100;
       return Math.round(krwPrice / 50) * 50;
     }
+
+    // Initialize realistic historical trajectory ending exactly at the current target estimated price
+    STOCKS_DATA.forEach(s => {
+      const targetKrw = roundToTick(s.usdPerpBase * state.activeFx);
+      const pts = [];
+      let cur = s.krxClose;
+      for (let i = 0; i < 44; i++) {
+        const progress = (i + 1) / 44;
+        const trend = s.krxClose + (targetKrw - s.krxClose) * progress;
+        const noise = (Math.sin(i * 0.6) * 0.0018) * s.krxClose;
+        pts.push(roundToTick(trend + noise));
+      }
+      pts.push(targetKrw);
+      state.priceHistory[s.code] = pts;
+      s.usdPerpCurrent = s.usdPerpBase;
+    });
 
     function getEstKrw(stock) {
       return roundToTick(stock.usdPerpCurrent * state.activeFx);
@@ -792,16 +816,23 @@
     function fmtSignedPct(val) { return `${val > 0 ? "+" : ""}${val.toFixed(2)}%`; }
 
     // =========================================================================
-    // 3. REAL EXCHANGE WEBSOCKET & REST CONNECTIONS (BINANCE + UPBIT + COINGECKO)
+    // 3. REAL EXCHANGE WEBSOCKET & REST CONNECTIONS (BINANCE TRADFI + HYPERLIQUID + UPBIT)
     // =========================================================================
     function connectBinanceWebSocket() {
       try {
-        const streams = "btcusdt@aggTrade/ethusdt@aggTrade/solusdt@aggTrade/btcusdt@depth5@500ms/btcusdt@markPrice@1s";
+        const streams = [
+          "skhynixusdt@aggTrade", "samsungusdt@aggTrade", "hyundaiusdt@aggTrade",
+          "samsungemusdt@aggTrade", "hanmiusdt@aggTrade", "naverusdt@aggTrade",
+          "lgelectronicsusdt@aggTrade", "ewyusdt@aggTrade",
+          "skhynixusdt@depth5@500ms", "samsungusdt@depth5@500ms",
+          "skhynixusdt@markPrice@1s", "samsungusdt@markPrice@1s",
+          "btcusdt@aggTrade", "ethusdt@aggTrade", "solusdt@aggTrade", "btcusdt@depth5@500ms"
+        ].join("/");
         const ws = new WebSocket(`wss://fstream.binance.com/stream?streams=${streams}`);
 
         ws.onopen = () => {
           state.binanceConnected = true;
-          document.getElementById("txt-binance").textContent = "Binance Futures LIVE";
+          document.getElementById("txt-binance").textContent = "Binance TradFi Perp LIVE";
           document.getElementById("dot-binance").className = "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping";
         };
 
@@ -824,17 +855,26 @@
 
           // 2. MarkPrice / Funding Rate Stream
           if (stream.includes("markPrice")) {
+            const sym = (d.s || "").toLowerCase();
             const r = parseFloat(d.r) * 100;
-            if (!isNaN(r)) {
+            const markP = parseFloat(d.p);
+            const matchedStock = STOCKS_DATA.find(s => s.binanceSym === sym);
+            if (matchedStock) {
+              if (!isNaN(r)) matchedStock.fundingRate = r;
+              if (!isNaN(markP) && markP > 50 && markP < 5000) {
+                matchedStock.usdPerpCurrent = +markP.toFixed(2);
+              }
+            }
+            if (!isNaN(r) && sym === "skhynixusdt") {
               const el = document.getElementById("insight-btc-funding");
               if (el) el.textContent = `${r >= 0 ? '+' : ''}${r.toFixed(4)}%`;
             }
             return;
           }
 
-          // 3. Real-time aggTrade Stream
+          // 3. Real-time aggTrade Stream (Direct Korean Stock Perp or Macro Tick)
           if (stream.includes("aggTrade")) {
-            const sym = d.s.toLowerCase(); // btcusdt, ethusdt, solusdt
+            const sym = (d.s || "").toLowerCase();
             const price = parseFloat(d.p);
             if (isNaN(price)) return;
 
@@ -842,7 +882,31 @@
             const tcEl = document.getElementById("tick-counter");
             if (tcEl) tcEl.textContent = fmtNum(state.tickCount);
 
-            // Update Macro indicator
+            // Direct match for Korean Stock Perpetual Contract (e.g. skhynixusdt, samsungusdt)
+            const directStock = STOCKS_DATA.find(s => s.binanceSym === sym);
+            if (directStock && price > 50 && price < 5000) {
+              const prevKrw = getEstKrw(directStock);
+              directStock.usdPerpCurrent = +price.toFixed(2);
+              const newKrw = getEstKrw(directStock);
+              const mInd = MACRO_INDICATORS.find(m => m.id === sym);
+              if (mInd) {
+                mInd.val = directStock.usdPerpCurrent;
+                mInd.change = getSpreadPct(directStock);
+              }
+              if (newKrw !== prevKrw) {
+                const hist = state.priceHistory[directStock.code];
+                if (hist) {
+                  hist.push(newKrw);
+                  if (hist.length > 45) hist.shift();
+                }
+                renderStockCards(directStock.code, newKrw > prevKrw ? 1 : -1);
+                if (directStock.code === state.selectedStockCode) renderDeepDive();
+              }
+              renderMacroStrip();
+              return;
+            }
+
+            // Macro crypto stream (btcusdt, ethusdt, solusdt) — provides gentle micro-ticks aroundusdPerpBase
             const mItem = MACRO_INDICATORS.find(m => m.id === sym);
             if (mItem) mItem.val = price;
 
@@ -851,12 +915,22 @@
 
             if (prevP && prevP > 0) {
               const relDelta = (price - prevP) / prevP;
-              // Amplify micro-ticks slightly so KRW stock ticks respond visibly in real time
               if (Math.abs(relDelta) > 0.00001) {
                 STOCKS_DATA.forEach(st => {
                   if (st.proxyStream === sym) {
                     const prevKrw = getEstKrw(st);
-                    st.usdPerpCurrent = +(st.usdPerpCurrent * (1 + relDelta * st.beta * 12)).toFixed(3);
+                    // Keep price tightly anchored within ±1.2% of usdPerpBase so SK Hynix stays ~1,190,000 KRW
+                    const candidate = st.usdPerpCurrent * (1 + relDelta * st.beta * 4);
+                    const minAllowed = st.usdPerpBase * 0.992;
+                    const maxAllowed = st.usdPerpBase * 1.008;
+                    st.usdPerpCurrent = +Math.max(minAllowed, Math.min(maxAllowed, candidate)).toFixed(2);
+
+                    const mInd = MACRO_INDICATORS.find(m => m.id === st.binanceSym);
+                    if (mInd) {
+                      mInd.val = st.usdPerpCurrent;
+                      mInd.change = getSpreadPct(st);
+                    }
+
                     const newKrw = getEstKrw(st);
                     if (newKrw !== prevKrw) {
                       const hist = state.priceHistory[st.code];
@@ -878,7 +952,7 @@
         };
 
         ws.onerror = () => {
-          document.getElementById("txt-binance").textContent = "Binance 폴백 모드";
+          document.getElementById("txt-binance").textContent = "Binance TradFi 폴백 모드";
         };
         ws.onclose = () => {
           state.binanceConnected = false;
@@ -918,30 +992,41 @@
             if (!data || !data.code) return;
 
             if (data.code === "KRW-USDT" && data.trade_price) {
-              state.usdtFx = parseFloat(data.trade_price);
-              const chgPct = (data.signed_change_rate || 0) * 100;
-              const mUsdt = MACRO_INDICATORS.find(m => m.id === "usdt");
-              if (mUsdt) {
-                mUsdt.val = state.usdtFx;
-                mUsdt.change = +chgPct.toFixed(2);
+              const liveUsdt = parseFloat(data.trade_price);
+              if (liveUsdt > 1200 && liveUsdt < 1600) {
+                state.usdtFx = liveUsdt;
+                const chgPct = (data.signed_change_rate || 0) * 100;
+                const mUsdt = MACRO_INDICATORS.find(m => m.id === "usdt");
+                if (mUsdt) {
+                  mUsdt.val = state.usdtFx;
+                  mUsdt.change = +chgPct.toFixed(2);
+                }
+                if (state.fxMode === "usdt") {
+                  state.activeFx = state.usdtFx;
+                  document.getElementById("active-fx-display").textContent = state.activeFx.toFixed(2);
+                  document.getElementById("fx-slider").value = state.activeFx;
+                  // Keep usdPerpBase aligned with 2026 KOSPI LAB KRW reference if USDT rate differs slightly
+                  STOCKS_DATA.forEach(s => {
+                    if (!s._livePerpSynced) {
+                      const refKrw = s.code === "000660" ? 1190000 :
+                                     s.code === "005930" ? 195500 :
+                                     s.code === "009150" ? 880000 :
+                                     s.code === "005380" ? 289000 :
+                                     s.code === "042700" ? 168500 :
+                                     s.code === "035420" ? 193600 :
+                                     s.code === "066570" ? 142000 : 179100;
+                      s.usdPerpBase = +(refKrw / state.activeFx).toFixed(2);
+                      s.usdPerpCurrent = s.usdPerpBase;
+                    }
+                  });
+                }
+                const kimp = (((state.usdtFx - state.officialFx) / state.officialFx) * 100);
+                const kimpEl = document.getElementById("insight-kimp");
+                if (kimpEl) kimpEl.textContent = `${kimp >= 0 ? '+' : ''}${kimp.toFixed(2)}% (실시간)`;
+                renderMacroStrip();
+                renderStockCards();
+                renderDeepDive();
               }
-              if (state.fxMode === "usdt") {
-                state.activeFx = state.usdtFx;
-                document.getElementById("active-fx-display").textContent = state.activeFx.toFixed(2);
-                document.getElementById("fx-slider").value = state.activeFx;
-              }
-              const kimp = (((state.usdtFx - state.officialFx) / state.officialFx) * 100);
-              const kimpEl = document.getElementById("insight-kimp");
-              if (kimpEl) kimpEl.textContent = `${kimp >= 0 ? '+' : ''}${kimp.toFixed(2)}% (실시간)`;
-              renderMacroStrip();
-              renderStockCards();
-            } else if (data.code === "KRW-BTC" && data.trade_price) {
-              const mBtc = MACRO_INDICATORS.find(m => m.id === "btckrw");
-              if (mBtc) {
-                mBtc.val = parseFloat(data.trade_price);
-                mBtc.change = +((data.signed_change_rate || 0) * 100).toFixed(2);
-              }
-              renderMacroStrip();
             }
           } catch (err) {}
         };
@@ -958,10 +1043,10 @@
       }
     }
 
-    // Fallback & Initial REST Fetch (Upbit REST / ExchangeRate API)
+    // Initial REST Fetch (Binance Futures TradFi + Upbit REST + ExchangeRate API)
     async function fetchInitialExchangeRates() {
       try {
-        const res = await fetch("https://api.upbit.com/v1/ticker?markets=KRW-USDT,KRW-BTC");
+        const res = await fetch("https://api.upbit.com/v1/ticker?markets=KRW-USDT");
         if (res.ok) {
           const arr = await res.json();
           arr.forEach(item => {
@@ -973,6 +1058,33 @@
               }
             }
           });
+        }
+      } catch (e) {}
+
+      try {
+        const bRes = await fetch("https://fapi.binance.com/fapi/v1/premiumIndex");
+        if (bRes.ok) {
+          const bArr = await bRes.json();
+          if (Array.isArray(bArr)) {
+            bArr.forEach(item => {
+              const sym = (item.symbol || "").toLowerCase();
+              const st = STOCKS_DATA.find(s => s.binanceSym === sym);
+              if (st && item.markPrice) {
+                const mp = parseFloat(item.markPrice);
+                // Validate that the contract price matches the 2026 share price scale
+                if (mp > 50 && mp < 5000 && Math.abs(mp * state.activeFx - st.krxClose) / st.krxClose < 0.25) {
+                  st.usdPerpBase = +mp.toFixed(2);
+                  st.usdPerpCurrent = st.usdPerpBase;
+                  st._livePerpSynced = true;
+                  if (item.lastFundingRate) {
+                    st.fundingRate = parseFloat(item.lastFundingRate) * 100;
+                  }
+                }
+              }
+            });
+            renderStockCards();
+            renderDeepDive();
+          }
         }
       } catch (e) {}
 
@@ -1004,9 +1116,9 @@
         const isUp = m.change >= 0;
         const colorCls = isUp ? "text-red-500" : "text-blue-500";
         const arrow = isUp ? "▲" : "▼";
-        const valStr = m.id === "btckrw"
-          ? (m.val / 10000).toFixed(0) + "만원"
-          : (m.unit === "$" ? "$" + m.val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : m.val.toLocaleString("ko-KR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + m.unit);
+        const valStr = m.unit === "$"
+          ? "$" + m.val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+          : m.val.toLocaleString("ko-KR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + m.unit;
 
         return `
           <div class="flex items-center gap-1.5">
@@ -1029,7 +1141,7 @@
         if (state.activeTab === "auto_it" && s.category !== "auto_it") return false;
         if (state.searchQuery) {
           const q = state.searchQuery.toLowerCase();
-          return s.name.toLowerCase().includes(q) || s.code.includes(q) || s.sector.toLowerCase().includes(q);
+          return s.name.toLowerCase().includes(q) || s.code.toLowerCase().includes(q) || s.sector.toLowerCase().includes(q) || s.perpTicker.toLowerCase().includes(q);
         }
         return true;
       });
@@ -1037,7 +1149,12 @@
       filtered.sort((a, b) => {
         if (state.sortBy === "spread_desc") return getSpreadPct(b) - getSpreadPct(a);
         if (state.sortBy === "spread_asc") return getSpreadPct(a) - getSpreadPct(b);
-        if (state.sortBy === "mcap_desc") return b.marketCapTrillion - a.marketCapTrillion;
+        if (state.sortBy === "mcap_desc") {
+          // Keep SK Hynix & Samsung Electronics at the very front
+          if (a.code === "000660") return -1;
+          if (b.code === "000660") return 1;
+          return b.marketCapTrillion - a.marketCapTrillion;
+        }
         if (state.sortBy === "vol_desc") return b.vol24hM - a.vol24hM;
         return 0;
       });
@@ -1059,7 +1176,7 @@
         const maxP = Math.max(...hist, stock.krxClose);
         const range = Math.max(100, maxP - minP);
         const pts = hist.slice(-20).map((p, idx) => {
-          const x = (idx / 19) * 110;
+          const x = (idx / 19) * 100;
           const y = 28 - ((p - minP) / range) * 24;
           return `${x.toFixed(1)},${y.toFixed(1)}`;
         }).join(" ");
@@ -1070,7 +1187,7 @@
           <div data-code="${stock.code}" class="stock-card bg-[var(--card)] border ${borderCls} rounded-xl p-4 shadow-sm transition cursor-pointer flex flex-col justify-between ${flashCls}">
             <div>
               <div class="flex items-start justify-between gap-2">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="px-2 py-0.5 rounded text-xs font-medium bg-[var(--secondary)] text-[var(--secondary-fg)]">${stock.sector}</span>
                   <h3 class="font-bold text-base">${stock.name}</h3>
                   <span class="text-xs text-[var(--muted)] font-mono">${stock.code}</span>
@@ -1105,18 +1222,18 @@
             </div>
 
             <div class="mt-3 pt-2.5 border-t border-[var(--border)] flex items-center justify-between gap-2 text-xs tabular-nums">
-              <div class="space-y-0.5">
-                <div class="text-[var(--muted)]">
-                  펀딩비: <span class="${stock.fundingRate >= 0 ? 'text-emerald-400' : 'text-amber-400'} font-semibold">${stock.fundingRate >= 0 ? '+' : ''}${stock.fundingRate.toFixed(4)}%</span>
-                  · 시총 ${stock.marketCapTrillion}조
+              <div class="space-y-0.5 min-w-0">
+                <div class="text-[var(--muted)] truncate">
+                  <span class="font-mono text-[var(--fg)]">${stock.binanceSym.toUpperCase()}</span>
+                  · 펀딩 <span class="${stock.fundingRate >= 0 ? 'text-emerald-400' : 'text-amber-400'} font-semibold">${stock.fundingRate >= 0 ? '+' : ''}${stock.fundingRate.toFixed(4)}%</span>
                 </div>
-                <div class="text-[var(--muted)] truncate max-w-[190px]">
-                  선행: <span class="text-[var(--fg)]">${stock.driverText}</span>
+                <div class="text-[var(--muted)] truncate">
+                  시총 ${stock.marketCapTrillion}조 · 24H $${stock.vol24hM}M
                 </div>
               </div>
 
-              <svg width="112" height="30" class="shrink-0 overflow-visible">
-                <line x1="0" y1="${closeY}" x2="110" y2="${closeY}" stroke="#eab308" stroke-dasharray="2,2" stroke-width="1" opacity="0.6" />
+              <svg width="102" height="30" class="shrink-0 overflow-visible">
+                <line x1="0" y1="${closeY}" x2="100" y2="${closeY}" stroke="#eab308" stroke-dasharray="2,2" stroke-width="1" opacity="0.6" />
                 <polyline fill="none" stroke="${strokeColor}" stroke-width="2" points="${pts}" />
               </svg>
             </div>
@@ -1172,8 +1289,8 @@
       document.getElementById("earnings-table-body").innerHTML = c.earnings.map(e => `
         <div class="flex items-center justify-between bg-[var(--bg)] px-3 py-2 rounded-lg border border-[var(--border)]">
           <span class="font-bold">${e.year}</span>
-          <span class="text-[var(--muted)]">매출 <strong class="text-[var(--fg)]">${e.rev}</strong></span>
-          <span class="text-[var(--muted)]">영업익 <strong class="text-[var(--fg)]">${e.op}</strong></span>
+          <span class="text-[var(--muted)]">매출/지수 <strong class="text-[var(--fg)]">${e.rev}</strong></span>
+          <span class="text-[var(--muted)]">영업익/지표 <strong class="text-[var(--fg)]">${e.op}</strong></span>
           <span class="text-red-500 font-semibold">${e.yoy}</span>
         </div>
       `).join("");
@@ -1194,7 +1311,7 @@
     }
 
     function renderOrderbook(stock, estKrw, spreadPct) {
-      const tickStep = estKrw >= 200000 ? 500 : (estKrw >= 50000 ? 100 : 50);
+      const tickStep = estKrw >= 500000 ? 1000 : (estKrw >= 200000 ? 500 : (estKrw >= 50000 ? 100 : 50));
       const asksContainer = document.getElementById("orderbook-asks");
       const bidsContainer = document.getElementById("orderbook-bids");
 
@@ -1416,8 +1533,11 @@
       const idx = Math.floor(Math.random() * STOCKS_DATA.length);
       const stock = STOCKS_DATA[idx];
       const prevKrw = getEstKrw(stock);
-      const deltaPct = (Math.random() - 0.485) * 0.003;
-      stock.usdPerpCurrent = +(stock.usdPerpCurrent * (1 + deltaPct)).toFixed(2);
+      const revertPull = (stock.usdPerpBase - stock.usdPerpCurrent) * 0.45;
+      const noise = (Math.random() - 0.5) * (stock.usdPerpBase * 0.0018);
+      const minAllowed = stock.usdPerpBase * 0.996;
+      const maxAllowed = stock.usdPerpBase * 1.004;
+      stock.usdPerpCurrent = +Math.max(minAllowed, Math.min(maxAllowed, stock.usdPerpCurrent + revertPull + noise)).toFixed(2);
       const newKrw = getEstKrw(stock);
       if (newKrw !== prevKrw) {
         state.tickCount++;
